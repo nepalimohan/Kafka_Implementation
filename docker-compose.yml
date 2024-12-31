@@ -1,0 +1,102 @@
+# version: '3.8'
+# services:
+#   zookeeper:
+#     image: confluentinc/cp-zookeeper:latest
+#     container_name: zookeeper
+#     environment:
+#       ZOOKEEPER_CLIENT_PORT: 2181
+
+#   kafka:
+#     image: confluentinc/cp-kafka:latest
+#     container_name: kafka
+#     ports:
+#       - "9092:9092"
+#     environment:
+#       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+#       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#     depends_on:
+#       - zookeeper
+
+#   kafka-ui:
+#     image: provectuslabs/kafka-ui:latest
+#     container_name: kafka-ui
+#     ports:
+#       - "8080:8080"
+#     environment:
+#       KAFKA_CLUSTERS_0_NAME: local
+#       KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS: kafka:9092
+#     depends_on:
+#       - kafka
+
+version: "3.8" # Update version if needed
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+
+
+  
+  # proj1:
+  #   build:
+  #     context: ./proj1
+  #   container_name: proj1
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+  #   depends_on:
+  #     - kafka
+  #   volumes:
+  #     - ./proj1:/app
+
+networks:
+  kafka_network:
+    driver: bridge
+
+
+  # proj1:
+  #   build:
+  #     context: ./proj1
+  #   container_name: proj1
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+  #   depends_on:
+  #     - kafka
+  #   volumes:
+  #     - ./proj1:/app
+
+  # proj2:
+  #   build:
+  #     context: ./proj2
+  #   container_name: proj2
+  #   ports:
+  #     - "8001:8000"
+  #   environment:
+  #     KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+  #   depends_on:
+  #     - kafka
+  #   volumes:
+  #     - ./proj2:/app
